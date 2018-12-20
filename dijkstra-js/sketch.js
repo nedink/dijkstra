@@ -1,4 +1,4 @@
-const POINTS = 10;
+const NODES = 10;
 const DIST = 200;
 
 const nodes = [];
@@ -14,8 +14,13 @@ class Node extends p5.Vector {
   }
 }
 
+// function shortestPath(nodes, start, end) {
+// }
+
 function shortestPath() {
-  const path = [];
+  const visited = [];
+  const unvisited = [];
+  // const node = start;
 
   const node = nodes.filter(node => node.start)[0];
   const neighbors = node.neighbors.sort(
@@ -23,6 +28,7 @@ function shortestPath() {
   );
   neighbors[0];
 
+  const path = [];
   return path;
 }
 
@@ -30,7 +36,7 @@ function setup() {
   createCanvas(600, 400);
   background(0);
 
-  for (let i = 0; i < POINTS; i++) {
+  for (let i = 0; i < NODES; i++) {
     const node = new Node(
       20 + random(width - 40),
       20 + random(height - 40),
@@ -45,35 +51,26 @@ function setup() {
     });
     console.log(node.neighbors);
 
-    if (i === 0) node.start = true;
-    else if (i === POINTS - 1) node.end = true;
-
     nodes.push(node);
   }
-
-  nodes.forEach(node => unvisited.push(node));
 
   console.log(shortestPath());
 }
 
 function draw() {
   const drawn = [];
-
   nodes.forEach(node => {
     noStroke();
     if (node.start) fill(0, 255, 0);
     else if (node.end) fill(0, 0, 255);
     else fill(255);
-
     ellipse(node.x, node.y, 10, 10);
-
     node.neighbors.forEach(n => {
       if (drawn.includes(n)) return;
       strokeWeight(1);
       stroke(255, 180);
       line(node.x, node.y, n.x, n.y);
     });
-
     drawn.push(node);
   });
 }
